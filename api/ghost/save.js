@@ -18,9 +18,15 @@ export default async function handler(req, res) {
             return res.status(500).json({ message: 'Configuration Error: Sanity Write Token is missing on server.' });
         }
 
+        const projectId = process.env.SANITY_PROJECT_ID || process.env.VITE_SANITY_PROJECT_ID;
+        if (!projectId) {
+            console.error('[Ghost Server] Missing Project ID');
+            return res.status(500).json({ message: 'Configuration Error: Project ID is missing on server.' });
+        }
+
         const client = createClient({
-            projectId: process.env.VITE_SANITY_PROJECT_ID,
-            dataset: process.env.VITE_SANITY_DATASET || 'production',
+            projectId: projectId,
+            dataset: process.env.SANITY_DATASET || process.env.VITE_SANITY_DATASET || 'production',
             token: process.env.SANITY_API_TOKEN,
             useCdn: false,
             apiVersion: '2023-05-03',
