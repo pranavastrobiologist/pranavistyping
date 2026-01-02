@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { ArrowRight, Calendar } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function PostCard({ post }) {
     return (
@@ -9,19 +9,27 @@ export default function PostCard({ post }) {
             padding: '24px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px',
-            transition: 'transform 0.2s',
-            height: '100%'
+            gap: '12px',
+            height: '100%',
+            transition: 'box-shadow 0.2s',
+            background: 'var(--bg-secondary)'
         }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-                <Calendar size={14} />
-                <time>{format(new Date(post.createdAt), 'MMMM d, yyyy')}</time>
-            </div>
+            <time style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                {format(new Date(post.createdAt), 'MMM d, yyyy')}
+            </time>
 
-            <Link to={`/post/${post.id}`} style={{ flex: 1 }}>
-                <h2 style={{ fontSize: '1.5rem', marginBottom: '8px', lineHeight: '1.3' }}>{post.title}</h2>
+            <Link to={`/post/${post.id}`} style={{ flex: 1, display: 'block' }}>
+                <h2 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    lineHeight: '1.4',
+                    color: 'var(--text-primary)'
+                }}>
+                    {post.title}
+                </h2>
                 <p style={{
-                    fontSize: '1rem',
+                    fontSize: '0.9375rem',
                     lineHeight: '1.6',
                     display: '-webkit-box',
                     WebkitLineClamp: '3',
@@ -36,13 +44,13 @@ export default function PostCard({ post }) {
             <Link to={`/post/${post.id}`} style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
-                color: 'var(--accent-primary)',
-                fontWeight: '600',
-                alignSelf: 'flex-start',
-                marginTop: 'auto'
+                gap: '4px',
+                color: 'var(--text-primary)',
+                fontWeight: '500',
+                fontSize: '0.875rem',
+                marginTop: '12px'
             }}>
-                Read Article <ArrowRight size={16} />
+                Read <ArrowRight size={14} />
             </Link>
         </article>
     );

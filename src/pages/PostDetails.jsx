@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { blogStore } from '../lib/store';
 import { format } from 'date-fns';
-import { ArrowLeft, Trash2, Calendar, Clock } from 'lucide-react';
+import { ArrowLeft, Trash2 } from 'lucide-react';
+import SafeLink from '../components/SafeLink';
 
 export default function PostDetails() {
     const { id } = useParams();
@@ -25,45 +26,73 @@ export default function PostDetails() {
         }
     };
 
+    const renderContent = (content) => {
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const parts = content.split(urlRegex);
+
+        return parts.map((part, index) => {
+            if (part.match(urlRegex)) {
+                return (
+                    <SafeLink
+                        key={index}
+                        href={part}
+                        style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}
+                    >
+                        {part}
+                    </SafeLink>
+                );
+            }
+            return part;
+        });
+    };
+
     if (!post) return null;
 
     return (
-        <article className="container">
-            <Link to="/" className="btn btn-ghost" style={{ paddingLeft: 0, marginBottom: '20px' }}>
-                <ArrowLeft size={18} /> Back to Home
+        <article className="container" style={{ maxWidth: '700px' }}>
+            <Link to="/" className="btn btn-ghost" style={{ paddingLeft: 0, marginBottom: '32px' }}>
+                <ArrowLeft size={16} /> Back to Home
             </Link>
 
-            <div className="glass-panel" style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
-                <header style={{ marginBottom: '30px' }}>
-                    <h1 style={{ fontSize: '3rem', lineHeight: '1.2', marginBottom: '20px' }}>{post.title}</h1>
-
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        borderBottom: '1px solid var(--border-color)',
-                        paddingBottom: '20px'
+            <header style={{ marginBottom: '40px' }}>
+                <div style={{
+                    marginBottom: '16px',
+                    color: 'var(--text-secondary)',
+                    fontSize: '0.9375rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}>
+                    <time dateTime={post.createdAt}>
+                        {format(new Date(post.createdAt), 'MMMM d, yyyy')}
+                    </time>
+                    <button onClick={handleDelete} className="btn btn-ghost" style={{
+                        color: 'var(--danger)',
+                        padding: '4px 8px',
+                        fontSize: '0.875rem'
                     }}>
-                        <div style={{ display: 'flex', gap: '20px', color: 'var(--text-secondary)' }}>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <Calendar size={16} />
-                                {format(new Date(post.createdAt), 'MMMM d, yyyy')}
-                            </span>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <Clock size={16} />
-                                {Math.ceil(post.content.split(' ').length / 200)} min read
-                            </span>
-                        </div>
-
-                        <button onClick={handleDelete} className="btn" style={{ color: 'var(--danger)' }}>
-                            <Trash2 size={18} /> Delete
-                        </button>
-                    </div>
-                </header>
-
-                <div style={{ fontSize: '1.125rem', lineHeight: '1.8', color: 'var(--text-primary)', whiteSpace: 'pre-wrap' }}>
-                    {post.content}
+                        <Trash2 size={14} /> Delete
+                    </button>
                 </div>
+
+                <h1 style={{
+                    fontSize: '2.5rem',
+                    lineHeight: '1.2',
+                    marginBottom: '0',
+                    letterSpacing: '-0.025em'
+                }}>
+                    {post.title}
+                </h1>
+            </header>
+
+            <div style={{
+                fontSize: '1.125rem',
+                lineHeight: '1.8',
+                color: 'var(--text-primary)',
+                whiteSpace: 'pre-wrap',
+                fontFamily: 'Georgia, serif'
+            }}>
+                {renderContent(post.content)}
             </div>
         </article>
     );

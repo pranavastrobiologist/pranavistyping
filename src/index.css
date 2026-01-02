@@ -1,33 +1,33 @@
 :root {
-  /* Colors - Poster Style (Yellow/Blue) */
-  --bg-primary: #e8f636;
-  /* Acid Yellow/Greenish similar to image */
-  --bg-secondary: #dce725;
-  /* Slightly darker yellow */
-  --bg-glass: rgba(255, 255, 255, 0.4);
-  /* Lighter glass for yellow bg */
+  /* Minimalist Theme */
+  --bg-primary: #fafafa;
+  /* Off-white background */
+  --bg-secondary: #ffffff;
+  /* Pure white for cards */
+  --bg-hover: #f4f4f5;
+  /* Zinc-100 */
 
-  --text-primary: #1a4cd2;
-  /* Vibrant Blue */
-  --text-secondary: #3b6bd6;
-  /* Lighter Blue */
-  --text-accent: #1a4cd2;
+  --text-primary: #18181b;
+  /* Zinc-900 */
+  --text-secondary: #71717a;
+  /* Zinc-500 */
+  --text-accent: #18181b;
+  /* Keep accent text dark for now, or match accent color */
 
-  --accent-primary: #1a4cd2;
-  /* Blue */
-  --accent-hover: #0d2fa1;
-  /* Darker Blue */
+  --accent-primary: #2563eb;
+  /* Accessible blue, keeping it simple */
+  --accent-hover: #1d4ed8;
+
   --danger: #ef4444;
 
-  --border-color: rgba(26, 76, 210, 0.2);
-  --glass-border: 2px solid rgba(26, 76, 210, 0.1);
+  --border-color: #e4e4e7;
+  /* Zinc-200 */
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
 
-  --shadow-sm: 4px 4px 0px rgba(26, 76, 210, 0.2);
-  --shadow-md: 8px 8px 0px rgba(26, 76, 210, 0.2);
-  /* Retro hard shadow */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 * {
@@ -39,11 +39,6 @@
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-primary);
-  background-image: url('/hero-poster.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -63,17 +58,17 @@ button {
 
 /* Utilities */
 .container {
-  max-width: 1200px;
+  max-width: 800px;
+  /* Narrower container for better readability */
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
+/* Replaces glass-panel with a clean card style */
 .glass-panel {
-  background: var(--bg-glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: var(--glass-border);
-  box-shadow: var(--shadow-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-md);
 }
 
@@ -82,20 +77,21 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
   font-weight: 500;
+  font-size: 0.875rem;
   transition: all 0.2s ease;
 }
 
 .btn-primary {
-  background-color: var(--accent-primary);
+  background-color: var(--text-primary);
+  /* Dark button for minimalist look */
   color: white;
-  box-shadow: var(--shadow-glow);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
+  background-color: #000;
   transform: translateY(-1px);
 }
 
@@ -105,7 +101,7 @@ button {
 
 .btn-ghost:hover {
   color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--bg-hover);
 }
 
 /* Typography */
@@ -117,56 +113,59 @@ h5,
 h6 {
   color: var(--text-primary);
   line-height: 1.2;
+  letter-spacing: -0.025em;
+  /* Tighter tracking for modern look */
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
-h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
 p {
   color: var(--text-secondary);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Form Elements */
 input,
 textarea {
   width: 100%;
-  background-color: rgba(30, 41, 59, 0.5);
+  background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  font-size: 0.9375rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
   font-family: inherit;
 }
 
 input:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  border-color: var(--text-primary);
+  /* Focus matches text color */
+  box-shadow: 0 0 0 1px var(--text-primary);
 }
 
 label {
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
 }

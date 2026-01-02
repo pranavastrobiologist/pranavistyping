@@ -12,47 +12,39 @@ export default function Home() {
 
     return (
         <div>
-            <header style={{
-                height: '80vh',
-                width: '100%',
+            <div style={{
+                marginBottom: '32px',
                 display: 'flex',
-                justifyContent: 'center',
                 alignItems: 'center',
-                marginBottom: '40px'
+                justifyContent: 'space-between'
             }}>
-                {/* Spacer to reveal fixed background */}
-            </header>
+                <h1 style={{ marginBottom: 0 }}>Latests Posts</h1>
+            </div>
 
-            <section className="container glass-panel" style={{ padding: '40px', marginBottom: '40px' }}>
+            {posts.length === 0 ? (
                 <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginBottom: '40px',
-                    borderBottom: '2px solid var(--border-color)',
-                    paddingBottom: '10px'
+                    textAlign: 'center',
+                    padding: '80px 0',
+                    color: 'var(--text-secondary)',
+                    background: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-color)'
                 }}>
-                    <h2 style={{ fontFamily: '"Permanent Marker", cursive', fontSize: '2rem' }}>Latest Scripts</h2>
-                    <Link to="/create" className="btn btn-primary" style={{ border: '2px solid var(--text-primary)', background: 'transparent', color: 'var(--text-primary)', fontWeight: 'bold', boxShadow: '4px 4px 0 var(--text-primary)' }}>New Entry</Link>
+                    <h3>No posts yet</h3>
+                    <p style={{ marginBottom: '24px' }}>Start writing your first blog post.</p>
+                    <Link to="/create" className="btn btn-primary">Create Post</Link>
                 </div>
-
-                {posts.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '60px 0', opacity: 0.7 }}>
-                        <h3>Scene 1: Silence</h3>
-                        <p>No scripts found in the archives.</p>
-                    </div>
-                ) : (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                        gap: '30px'
-                    }}>
-                        {posts.map(post => (
-                            <PostCard key={post.id} post={post} />
-                        ))}
-                    </div>
-                )}
-            </section>
+            ) : (
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    gap: '24px'
+                }}>
+                    {posts.map(post => (
+                        <PostCard key={post.id} post={post} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

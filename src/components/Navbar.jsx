@@ -7,35 +7,32 @@ export default function Navbar() {
 
     return (
         <nav style={{
-            position: 'absolute', /* Absolute to sit on top of the yellow background seamlessly */
-            top: 0,
-            width: '100%',
-            zIndex: 100,
-            padding: '20px 0'
+            borderBottom: '1px solid var(--border-color)',
+            background: 'var(--bg-secondary)'
         }}>
             <div className="container" style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'flex-end',
-                height: '60px'
+                justifyContent: 'space-between',
+                height: '64px'
             }}>
-                {/* Removed Logo to let the hero text shine */}
+                <Link to="/" style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '700',
+                    color: 'var(--text-primary)'
+                }}>
+                    DevBlog
+                </Link>
 
                 {location.pathname !== '/create' && (
-                    <Link to="/create" className="btn" style={{
-                        border: '2px solid var(--text-primary)',
-                        boxShadow: '4px 4px 0 var(--text-primary)',
-                        color: 'var(--text-primary)',
-                        fontWeight: 'bold',
-                        background: 'transparent'
-                    }}>
-                        <PenTool size={18} />
-                        <span>Write Script</span>
+                    <Link to="/create" className="btn btn-primary">
+                        <PenTool size={16} />
+                        <span>Write Post</span>
                     </Link>
                 )}
 
                 {location.pathname === '/create' && (
-                    <Link to="/" style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>Back to Set</Link>
+                    <Link to="/" className="btn btn-ghost">Back to Home</Link>
                 )}
             </div>
         </nav>
