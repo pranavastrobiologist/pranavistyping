@@ -1,12 +1,13 @@
 import React from 'react';
 import ActiveIndicator from '../components/ActiveIndicator';
 import NowSection from '../components/NowSection';
+import { LiveField } from '../ghost/LiveField';
 
 export default function Now() {
-    const lastUpdated = new Date().toLocaleDateString('en-US', { 
-        month: 'long', 
-        day: 'numeric', 
-        year: 'numeric' 
+    const lastUpdated = new Date().toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
     });
 
     return (
@@ -23,7 +24,7 @@ export default function Now() {
                     marginBottom: '80px',
                     textAlign: 'center'
                 }}>
-                    <h1 style={{
+                    <LiveField docId="now-page" field="title" type="string" as="h1" className="now-title" style={{
                         fontSize: 'clamp(2.5rem, 5vw, 4rem)',
                         fontWeight: '700',
                         lineHeight: '1.1',
@@ -32,7 +33,7 @@ export default function Now() {
                         marginBottom: '24px'
                     }}>
                         What I'm doing now
-                    </h1>
+                    </LiveField>
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -47,7 +48,7 @@ export default function Now() {
                         color: 'var(--accent-color)',
                         fontWeight: '500'
                     }}>
-                        Last updated {lastUpdated}
+                        Last updated <LiveField docId="now-page" field="lastUpdated" type="date">{lastUpdated}</LiveField>
                     </p>
                 </header>
 
@@ -70,16 +71,16 @@ export default function Now() {
                     }}>
                         Current Focus
                     </h2>
-                    <p style={{
+                    <LiveField docId="now-page" field="focusBody" type="text" as="p" style={{
                         fontSize: '1.25rem',
                         lineHeight: '1.7',
                         color: 'var(--text-primary)',
                         fontFamily: 'Georgia, serif',
                         margin: 0
                     }}>
-                        Building a refined digital presence that balances creativity with technical depth. 
+                        Building a refined digital presence that balances creativity with technical depth.
                         Exploring the intersection of design systems, web performance, and thoughtful storytelling.
-                    </p>
+                    </LiveField>
                 </div>
 
                 <div style={{ marginBottom: '64px' }}>
