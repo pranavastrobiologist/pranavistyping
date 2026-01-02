@@ -100,11 +100,11 @@ export default function Now() {
 
                     <NowSection label="Reading" accent>
                         <p style={{ margin: '0 0 8px 0' }}>
-                            <LiveField docId="now-page" field="inputs.reading.0.title" as="strong">
+                            <LiveField docId="now-page" field="inputs_reading_0_title" as="strong">
                                 The Design of Everyday Things
-                            </LiveField> by <LiveField docId="now-page" field="inputs.reading.0.author">Don Norman</LiveField>
+                            </LiveField> by <LiveField docId="now-page" field="inputs_reading_0_author">Don Norman</LiveField>
                         </p>
-                        <LiveField docId="now-page" field="inputs.reading.0.note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                        <LiveField docId="now-page" field="inputs_reading_0_note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
                             Revisiting the fundamentals of user-centered design
                         </LiveField>
                     </NowSection>
@@ -113,9 +113,9 @@ export default function Now() {
 
                     <NowSection label="Listening" accent>
                         <p style={{ margin: '0 0 8px 0' }}>
-                            <LiveField docId="now-page" field="inputs.listening.0.title" as="strong">Tycho</LiveField> — <LiveField docId="now-page" field="inputs.listening.0.album">Weather</LiveField>
+                            <LiveField docId="now-page" field="inputs_listening_0_title" as="strong">Tycho</LiveField> — <LiveField docId="now-page" field="inputs_listening_0_album">Weather</LiveField>
                         </p>
-                        <LiveField docId="now-page" field="inputs.listening.0.note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                        <LiveField docId="now-page" field="inputs_listening_0_note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
                             Ambient soundscapes for deep work sessions
                         </LiveField>
                     </NowSection>
@@ -124,9 +124,9 @@ export default function Now() {
 
                     <NowSection label="Learning" accent>
                         <p style={{ margin: '0 0 8px 0' }}>
-                            <LiveField docId="now-page" field="inputs.learning.0.title" as="strong">Advanced React Patterns</LiveField>
+                            <LiveField docId="now-page" field="inputs_learning_0_title" as="strong">Advanced React Patterns</LiveField>
                         </p>
-                        <LiveField docId="now-page" field="inputs.learning.0.note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                        <LiveField docId="now-page" field="inputs_learning_0_note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
                             Compound components, render props, and custom hooks
                         </LiveField>
                     </NowSection>
@@ -144,9 +144,9 @@ export default function Now() {
 
                     <NowSection label="Building" accent>
                         <p style={{ margin: '0 0 8px 0' }}>
-                            <LiveField docId="now-page" field="outputs.building.0.title" as="strong">Personal Blog Platform</LiveField>
+                            <LiveField docId="now-page" field="outputs_building_0_title" as="strong">Personal Blog Platform</LiveField>
                         </p>
-                        <LiveField docId="now-page" field="outputs.building.0.note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                        <LiveField docId="now-page" field="outputs_building_0_note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
                             A minimalist writing space with Medium-inspired aesthetics
                         </LiveField>
                     </NowSection>
@@ -155,9 +155,9 @@ export default function Now() {
 
                     <NowSection label="Writing" accent>
                         <p style={{ margin: '0 0 8px 0' }}>
-                            <LiveField docId="now-page" field="outputs.writing.0.title" as="strong">Design Systems in Practice</LiveField>
+                            <LiveField docId="now-page" field="outputs_writing_0_title" as="strong">Design Systems in Practice</LiveField>
                         </p>
-                        <LiveField docId="now-page" field="outputs.writing.0.note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                        <LiveField docId="now-page" field="outputs_writing_0_note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
                             Documenting patterns and principles for scalable UI
                         </LiveField>
                     </NowSection>
@@ -166,9 +166,9 @@ export default function Now() {
 
                     <NowSection label="Exploring" accent>
                         <p style={{ margin: '0 0 8px 0' }}>
-                            <LiveField docId="now-page" field="outputs.exploring.0.title" as="strong">Generative Art with Canvas API</LiveField>
+                            <LiveField docId="now-page" field="outputs_exploring_0_title" as="strong">Generative Art with Canvas API</LiveField>
                         </p>
-                        <LiveField docId="now-page" field="outputs.exploring.0.note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                        <LiveField docId="now-page" field="outputs_exploring_0_note" as="p" style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
                             Creating algorithmic patterns and interactive visualizations
                         </LiveField>
                     </NowSection>
