@@ -7,33 +7,35 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
     return (
         <div style={{
             position: 'fixed',
-            top: '20px',
+            bottom: '30px', // Moved to bottom to avoid covering navbar
             left: '50%',
             transform: 'translateX(-50%)',
-            zIndex: 1000,
-            width: '90%',
-            maxWidth: '900px'
+            zIndex: 900,
+            width: 'auto',
+            minWidth: '320px',
+            maxWidth: '600px'
         }}>
             <div style={{
                 background: 'rgba(60, 60, 60, 0.95)',
                 backdropFilter: 'blur(10px)',
                 borderRadius: '50px',
-                padding: '12px 20px',
+                padding: '8px 16px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-                border: '1px solid rgba(255, 255, 255, 0.1)'
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                gap: '24px'
             }}>
                 {/* Left Section - Star Icon and Text */}
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '12px',
-                    flex: 1
+                    gap: '10px',
+                    whiteSpace: 'nowrap'
                 }}>
                     <Star 
-                        size={24} 
+                        size={18} 
                         style={{ 
                             color: '#ffffff',
                             fill: 'none',
@@ -42,7 +44,7 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                     />
                     <span style={{
                         color: '#ffffff',
-                        fontSize: '1rem',
+                        fontSize: '0.875rem',
                         fontWeight: '400',
                         letterSpacing: '0.3px'
                     }}>
@@ -54,7 +56,7 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '16px'
+                    gap: '12px'
                 }}>
                     <button 
                         onClick={() => window.history.back()}
@@ -62,7 +64,7 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                             background: 'transparent',
                             border: 'none',
                             cursor: 'pointer',
-                            padding: '8px',
+                            padding: '6px',
                             display: 'flex',
                             alignItems: 'center',
                             transition: 'transform 0.2s'
@@ -70,12 +72,12 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                         onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                     >
-                        <ChevronLeft size={24} style={{ color: '#ffffff' }} />
+                        <ChevronLeft size={20} style={{ color: '#ffffff' }} />
                     </button>
 
                     <div style={{
                         width: '1px',
-                        height: '24px',
+                        height: '16px',
                         background: 'rgba(255, 255, 255, 0.3)'
                     }} />
 
@@ -85,7 +87,7 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                             background: 'transparent',
                             border: 'none',
                             cursor: 'pointer',
-                            padding: '8px',
+                            padding: '6px',
                             display: 'flex',
                             alignItems: 'center',
                             transition: 'transform 0.2s'
@@ -93,12 +95,12 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                         onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                     >
-                        <Menu size={24} style={{ color: '#ffffff' }} />
+                        <Menu size={20} style={{ color: '#ffffff' }} />
                     </button>
 
                     <div style={{
                         width: '1px',
-                        height: '24px',
+                        height: '16px',
                         background: 'rgba(255, 255, 255, 0.3)'
                     }} />
 
@@ -108,7 +110,7 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                             background: 'transparent',
                             border: 'none',
                             cursor: 'pointer',
-                            padding: '8px',
+                            padding: '6px',
                             display: 'flex',
                             alignItems: 'center',
                             transition: 'transform 0.2s'
@@ -116,7 +118,7 @@ export default function FloatingSearchBar({ currentPage = "Home Page" }) {
                         onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                     >
-                        <ChevronUp size={24} style={{ color: '#ffffff' }} />
+                        <ChevronUp size={20} style={{ color: '#ffffff' }} />
                     </button>
                 </div>
             </div>
