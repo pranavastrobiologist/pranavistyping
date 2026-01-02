@@ -1,26 +1,10 @@
-import { client } from '../lib/sanity';
-
 /**
  * Persistence Layer
- * Handles saving content to either Sanity (if configured) or LocalStorage (fallback).
+ * Handles saving content to Sanity via Secure Serverless Function
  */
 
-const LOCAL_STORAGE_KEY = 'ghost_content_cache';
-
-// Helper to get local cache
-function getLocalCache() {
-    try {
-        const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-        return data ? JSON.parse(data) : {};
-    } catch (e) {
-        return {};
-    }
-}
-
-// Helper to set local cache
-function setLocalCache(data) {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
-}
+// We don't import the client here directly for WRITES, because we don't have the write-token.
+// We only use the client for READS (if we wanted to fetch fresh data).
 
 /**
  * Save content
@@ -29,50 +13,64 @@ function setLocalCache(data) {
  * @param {any} value 
  */
 export async function saveContent(docId, field, value) {
-    console.log(`Saving ${field} in ${docId} to:`, value);
+    console.log(`Saving ${field} in ${docId} to Sanity (via API)...`);
 
-    // 1. Try Sanity if Project ID exists
-    if (import.meta.env.VITE_SANITY_PROJECT_ID) {
-        try {
-            // This requires a write token which we don't have in client-side env usually.
-            // In a real app, this calls a serverless function /api/ghost/save
-            // For now, we'll log it and fall back to local to simulate "working".
-            console.log('Sanity configured, but using local fallback for MVP demo.');
-        } catch (err) {
-            console.error('Sanity save failed', err);
+    try {
+        const response = await fetch('/api/ghost/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // We send the secret key as proof we are the owner.
+                // Since this runs in the browser, the User MUST have the env var loaded 
+                // (which Lockbox verifies).
+                'Authorization': `Bearer ${import.meta.env.VITE_GHOST_SECRET_KEY}`
+            },
+            body: JSON.stringify({ docId, field, value })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.statusText}`);
         }
+
+        const result = await response.json();
+        console.log('Sanity Save Success:', result);
+
+        // Dispatch local event so UI updates immediately (Optimistic UI handled by Overlay, but this confirms it)
+        window.dispatchEvent(new CustomEvent('ghost-content-updated', {
+            detail: { docId, field, value }
+        }));
+
+        return true;
+    } catch (err) {
+        console.error('Failed to save to Sanity:', err);
+        // Fallback to local storage so user doesn't lose data if offline or API fails
+        fallbackSave(docId, field, value);
+        return false;
     }
+}
 
-    // 2. Local Fallback (Simulation)
-    const cache = getLocalCache();
-    if (!cache[docId]) cache[docId] = {};
-
-    // Handle nested fields (e.g. inputs.reading.0.title)
-    // For simplicity in MVP, we flatten or just store the direct path if simple
-    // But for the array items, we need a smarter structure.
-    // Let's use the field path string as a unique key for now.
-    cache[docId][field] = value;
-
-    setLocalCache(cache);
-
-    // Dispatch event so hooks can update
-    window.dispatchEvent(new CustomEvent('ghost-content-updated', {
-        detail: { docId, field, value }
-    }));
-
-    return true;
+// Keep local fallback for offline resilience
+function fallbackSave(docId, field, value) {
+    const LOCAL_STORAGE_KEY = 'ghost_content_cache';
+    try {
+        const data = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
+        const cache = JSON.parse(data);
+        if (!cache[docId]) cache[docId] = {};
+        cache[docId][field] = value;
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cache));
+        console.warn('Saved to LocalStorage (Fallback)');
+    } catch (e) {
+        console.error('Fallback save failed', e);
+    }
 }
 
 /**
- * Retrieve content (Hook helper)
- * @param {string} docId 
- * @param {string} field 
- * @returns {any} value or undefined
+ * Retrieve content
+ * For now, we still rely on initialProps (SSR) or the component's own state.
+ * But we can check local cache for pending/optimistic updates.
  */
 export function getContent(docId, field) {
-    const cache = getLocalCache();
-    if (cache[docId] && cache[docId][field] !== undefined) {
-        return cache[docId][field];
-    }
+    // In Phase 5+, we could fetch live draft content from Sanity here.
+    // For now, return undefined so it falls back to the static props / children.
     return undefined;
 }
