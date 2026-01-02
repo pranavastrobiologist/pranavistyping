@@ -5,53 +5,58 @@ import { ArrowRight } from 'lucide-react';
 
 export default function PostCard({ post }) {
     return (
-        <article className="glass-panel" style={{
-            padding: '24px',
+        <article style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '12px',
-            height: '100%',
-            transition: 'box-shadow 0.2s',
-            background: 'var(--bg-secondary)'
+            gap: '8px'
         }}>
-            <time style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-                {format(new Date(post.createdAt), 'MMM d, yyyy')}
-            </time>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                <span style={{ fontWeight: '500', color: 'var(--text-primary)' }}>Pranav Subramanian</span>
+                <span>·</span>
+                <time>{format(new Date(post.createdAt), 'MMM d, yyyy')}</time>
+            </div>
 
-            <Link to={`/post/${post.id}`} style={{ flex: 1, display: 'block' }}>
+            <Link to={`/post/${post.id}`} style={{ display: 'block', textDecoration: 'none' }}>
                 <h2 style={{
-                    fontSize: '1.25rem',
-                    fontWeight: '600',
+                    fontSize: '1.5rem',
+                    fontWeight: '800',
                     marginBottom: '8px',
-                    lineHeight: '1.4',
-                    color: 'var(--text-primary)'
+                    lineHeight: '1.25',
+                    fontFamily: 'serif',
+                    color: 'var(--text-primary)',
+                    letterSpacing: '-0.025em'
                 }}>
                     {post.title}
                 </h2>
                 <p style={{
-                    fontSize: '0.9375rem',
-                    lineHeight: '1.6',
+                    fontSize: '1rem',
+                    lineHeight: '1.5',
                     display: '-webkit-box',
-                    WebkitLineClamp: '3',
+                    WebkitLineClamp: '2',
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
-                    color: 'var(--text-secondary)'
+                    color: 'var(--text-secondary)',
+                    fontFamily: 'serif',
+                    marginTop: '4px'
                 }}>
                     {post.content}
                 </p>
             </Link>
 
-            <Link to={`/post/${post.id}`} style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                color: 'var(--text-primary)',
-                fontWeight: '500',
-                fontSize: '0.875rem',
-                marginTop: '12px'
-            }}>
-                Read <ArrowRight size={14} />
-            </Link>
+            <div style={{ paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    <span style={{
+                        background: '#f4f4f5',
+                        padding: '4px 12px',
+                        borderRadius: '100px',
+                        fontSize: '0.8rem',
+                        color: 'var(--text-secondary)'
+                    }}>
+                        Design
+                    </span>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', paddingTop: '4px' }}>4 min read</span>
+                </div>
+            </div>
         </article>
     );
 }

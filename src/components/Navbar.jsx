@@ -1,39 +1,48 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { PenTool } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
-    const location = useLocation();
-
     return (
         <nav style={{
             borderBottom: '1px solid var(--border-color)',
-            background: 'var(--bg-secondary)'
+            background: '#ffffff',
+            padding: '20px 0'
         }}>
             <div className="container" style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                height: '64px'
+                maxWidth: '1200px'
             }}>
+                {/* Logo Section */}
                 <Link to="/" style={{
-                    fontSize: '1.25rem',
+                    fontSize: '2rem',
                     fontWeight: '700',
-                    color: 'var(--text-primary)'
+                    fontFamily: 'serif',
+                    color: 'var(--text-primary)',
+                    letterSpacing: '-0.05em',
+                    textDecoration: 'none'
                 }}>
-                    DevBlog
+                    pranav is typing...
                 </Link>
 
-                {location.pathname !== '/create' && (
-                    <Link to="/create" className="btn btn-primary">
-                        <PenTool size={16} />
-                        <span>Write Post</span>
+                {/* Navigation Links */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '24px', fontSize: '0.875rem' }}>
+                    <Link to="/about" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>My story</Link>
+                    <Link to="/travel" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Travel</Link>
+                    <Link to="/create" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Write</Link>
+                    <Link to="/signin" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Sign in</Link>
+                    <Link to="/get-started" className="btn" style={{
+                        background: '#191919',
+                        color: 'white',
+                        borderRadius: '20px',
+                        padding: '8px 16px',
+                        fontSize: '0.875rem',
+                        textDecoration: 'none'
+                    }}>
+                        Get started
                     </Link>
-                )}
-
-                {location.pathname === '/create' && (
-                    <Link to="/" className="btn btn-ghost">Back to Home</Link>
-                )}
+                </div>
             </div>
         </nav>
     );
