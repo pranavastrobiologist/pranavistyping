@@ -28,6 +28,7 @@ export default function Navbar() {
 
                 {/* Navigation Links */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px', fontSize: '0.875rem' }}>
+                    <Link to="/now" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Now</Link>
                     <Link to="/about" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>My story</Link>
                     <Link to="/travel" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Travel</Link>
                     <Link to="/create" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>Write</Link>
