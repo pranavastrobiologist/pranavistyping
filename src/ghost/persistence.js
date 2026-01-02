@@ -10,6 +10,21 @@ import { client } from '../lib/sanity'; // Ensure this client is set up for publ
 // Structure: { [docId]: { [field]: value } }
 let memoryCache = {};
 
+// Keep local fallback for offline resilience
+function fallbackSave(docId, field, value) {
+    const LOCAL_STORAGE_KEY = 'ghost_content_cache';
+    try {
+        const data = localStorage.getItem(LOCAL_STORAGE_KEY) || '{}';
+        const cache = JSON.parse(data);
+        if (!cache[docId]) cache[docId] = {};
+        cache[docId][field] = value;
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cache));
+        console.warn('Saved to LocalStorage (Fallback)');
+    } catch (e) {
+        console.error('Fallback save failed', e);
+    }
+}
+
 /**
  * Save content
  * @param {string} docId 
@@ -46,7 +61,9 @@ export async function saveContent(docId, field, value) {
         return true;
     } catch (err) {
         console.error('Failed to save to Sanity:', err);
-        // Fallback or Alert User? For MVP we just log
+        alert(`Cloud Save Failed: ${err.message}\nSaved locally instead.`);
+        // Fallback to local storage so user doesn't lose data if offline or API fails
+        fallbackSave(docId, field, value);
         return false;
     }
 }
@@ -56,11 +73,30 @@ export async function saveContent(docId, field, value) {
  * Call this on page mount to pull the latest CMS data.
  */
 export async function fetchAndHydrate(docId) {
+    // 1. Load LocalStorage Fallback FIRST (Low latency + Offline support)
+    try {
+        const localData = localStorage.getItem('ghost_content_cache');
+        if (localData) {
+            const cache = JSON.parse(localData);
+            if (cache[docId]) {
+                const docData = cache[docId];
+                Object.keys(docData).forEach(key => {
+                    if (!memoryCache[docId]) memoryCache[docId] = {};
+                    memoryCache[docId][field] = docData[key]; // Update memory
+
+                    window.dispatchEvent(new CustomEvent('ghost-content-updated', {
+                        detail: { docId, field: key, value: docData[key] }
+                    }));
+                });
+                console.log('Local Hydration complete for', docId);
+            }
+        }
+    } catch (e) { console.error('Local read failed', e); }
+
     if (!import.meta.env.VITE_SANITY_PROJECT_ID) return;
 
-    console.log(`Hydrating content for ${docId}...`);
+    console.log(`Hydrating content for ${docId} from Cloud...`);
     try {
-        // Fetch the entire document
         const data = await client.fetch(`*[_id == $id][0]`, { id: docId });
 
         if (data) {
@@ -68,32 +104,15 @@ export async function fetchAndHydrate(docId) {
             memoryCache[docId] = { ...memoryCache[docId], ...data };
 
             // Broadcast all fields
-            // We iterate keys because our simple LiveField just listens to exact field matches
             Object.keys(data).forEach(key => {
-                // If it's a nested object (like inputs.reading...), we might need flattening 
-                // if we stored it flattened. But Sanity stores structured JSON.
-                // Our LiveField currently expects "inputs.reading.0.title" as a key?
-                // Wait, our local storage fallback stored flattened keys? 
-                // No, local storage stored { inputs: { reading: ... } } logic if we parsed JSON.
-                // But my save.js does `set({ [field]: value })`.
-                // If field was "inputs.reading.0.title", Sanity patch set that exact path?
-                // Sanity patch support dot notation for deep setting? No, usually handled by client.
-                // Actually my save.js logic `p.set({ [field]: value })` treats the key as a string literal 
-                // unless Sanity client auto-expands dot notation. 
-                // Sanity Client `set` DOES NOT auto-expand dot notation keys into objects. 
-                // It sets a top-level key with dots in the name usually, unless using specific patch DSL.
-                // CHECK: If I saved "inputs.reading.0.title", Sanity likely has `{"inputs.reading.0.title": "Value"}`
-                // This is fine for this MVP "Key-Value Store" approach.
-                // So hydration is simple:
-
                 window.dispatchEvent(new CustomEvent('ghost-content-updated', {
                     detail: { docId, field: key, value: data[key] }
                 }));
             });
-            console.log('Hydration complete for', docId);
+            console.log('Cloud Hydration complete for', docId);
         }
     } catch (err) {
-        console.error('Hydration failed', err);
+        console.error('Cloud Hydration failed', err);
     }
 }
 
