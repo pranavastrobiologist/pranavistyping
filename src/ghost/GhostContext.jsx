@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { GhostOverlay } from './GhostOverlay';
 
 /**
  * GhostContext
@@ -48,7 +49,7 @@ export function GhostProvider({ children }) {
     return (
         <GhostContext.Provider value={value}>
             {children}
-            {/* Conditional Ghost Overlay would be mounted here or in App structure */}
+            <GhostOverlay />
         </GhostContext.Provider>
     );
 }
