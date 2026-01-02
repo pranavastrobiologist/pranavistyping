@@ -1,65 +1,42 @@
-# pranav is typing...
+# Antigravity (Pranav is Typing)
 
-A minimalist, Medium-style blog platform built with React, Vite, and Tailwind CSS concepts.
+A personal digital garden and "Now" page, featuring **Ghost Mode**—an invisible, zero-deploy visual editing layer.
 
-## 🌐 Live Site
-**Production URL**: [https://pranavistyping.vercel.app](https://pranavistyping.vercel.app)
+## 👻 Ghost Mode
 
-## Features
-- **Minimalist Design**: Clean typography and whitespace-focused layout.
-- **Secure by Default**: 
-  - CSP and security headers via `vercel.json`
-  - Input handling stability
-  - Simulated Authentication ("User Manipulation Prevention")
-  - Safe Link navigation for external URLs
-- **CD Pipeline**: Automated testing and build workflow via GitHub Actions.
+Ghost Mode is a custom visual editing architecture that allows the site owner to edit content directly on the live website without a CMS dashboard or code deployments.
 
-## Development
+### How it Works
 
-1. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+1.  **Invisible by Default**: Public users see a standard, high-performance React application. The editing layer is not loaded.
+2.  **The Lockbox**: A secure route (`/lockbox`) accepts a secret key. Upon validation, it sets an encrypted session token in the browser.
+3.  **The Overlay**: When the site detects an authenticated owner, it mounts the **Ghost Overlay**. This layer identifies editable content using steganographic `data-ghost-id` attributes.
+4.  **Visual Editing**: Hovering over content reveals a highlight box. Clicking opens the **Ghost Editor**.
+5.  **Global Persistence**: Edits are securely pushed to **Sanity.io** via a serverless function (`/api/ghost/save`). The site then hydrates this content for all users globally.
 
-2. **Run Locally**
-   ```bash
-   npm run dev
-   ```
+### Architecture
 
-3. **run Tests**
-   ```bash
-   npm test
-   ```
+- **Frontend**: React + Vite
+- **CMS (Headless)**: Sanity.io
+- **Auth**: Custom Key-based (Environment Variable verified)
+- **Deployment**: Vercel
 
-## Deployment & Security
+## Project Structure
 
-This project is configured for continuous deployment with robust security headers.
+- `src/ghost/`: Core Ghost Mode logic (Context, Overlay, Editor, Persistence).
+- `src/pages/Lockbox.jsx`: Authentication entry point.
+- `src/pages/Now.jsx`: The main "Now" page, fully instrumented with `LiveField` components.
+- `api/ghost/`: Secure serverless functions for handling CMS writes.
 
-### 1. Continuous Deployment
-The repository includes a GitHub Actions workflow (`.github/workflows/ci-cd.yml`) that:
-- Runs linting and tests on every push.
-- Builds the project for production.
-- Can be configured to deploy automatically to Vercel/Netlify/GitHub Pages.
+## Local Development
 
-To enable auto-deploy, configure your hosting provider secrets (e.g., `VERCEL_TOKEN`) in the GitHub Repository Settings > Secrets and update the workflow file.
+1.  Clone the repo.
+2.  Install dependencies: `npm install`
+3.  Set environment variables in `.env`:
+    - `VITE_GHOST_SECRET_KEY`
+    - `VITE_SANITY_PROJECT_ID`
+    - `SANITY_API_TOKEN` (Server-side only)
+4.  Run dev server: `npm run dev`
 
-### 2. Security Configuration
-Security headers are enforced using `vercel.json`. This ensures:
-- **Content Security Policy (CSP)**: RESTRICTS sources of scripts, styles, and images to prevent XSS.
-- **HSTS**: Enforces HTTPS connections.
-- **X-Frame-Options**: Prevents clickjacking.
-
-**Verification**:
-After deployment, inspect the HTTP headers in your browser's DevTools (Network tab) to confirm `Strict-Transport-Security` and `Content-Security-Policy` are present.
-
-### 3. Environment Variables
-Copy `.env.example` to `.env` locally:
-```bash
-cp .env.example .env
-```
-Manage environment-specific secrets (like API keys or Auth IDs) here. never commit `.env` to version control.
-
-### 4. Authentication
-The app currently uses a simulated AuthContext (`src/components/AuthContext.jsx`). For production:
-1. Replace the mock logic with a real provider SDK (Auth0, Firebase, etc.).
-2. Use `VITE_AUTH_CLIENT_ID` from environment variables.
+---
+*Built by Pranav Subramanian.*
