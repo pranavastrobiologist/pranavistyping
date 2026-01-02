@@ -17,7 +17,7 @@ Ghost Mode is a custom visual editing architecture that allows the site owner to
 ### Architecture
 
 - **Frontend**: React + Vite
-- **CMS (Headless)**: Sanity.io
+- **CMS (Headless)**: Sanity.io. Content is stored using a flattened key strategy (e.g., `inputs_reading_0_title`) to ensure robust persistence for complex nested UI elements.
 - **Auth**: Custom Key-based (Environment Variable verified)
 - **Deployment**: Vercel
 
