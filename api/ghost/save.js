@@ -5,22 +5,18 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    // 1. Security Check
-    // We verify that the requestor knows the Ghost Mode Secret Key
     const authHeader = req.headers.authorization;
-    const SECRET_KEY = process.env.VITE_GHOST_SECRET_KEY; // Using the server-side env var
+    const SECRET_KEY = process.env.VITE_GHOST_SECRET_KEY;
 
     if (!authHeader || authHeader !== `Bearer ${SECRET_KEY}`) {
         return res.status(401).json({ message: 'Unauthorized: Invalid Ghost Key' });
     }
 
-    // 2. Initialize Sanity Client (Privileged)
-    // using the token that allows writes
     const client = createClient({
         projectId: process.env.VITE_SANITY_PROJECT_ID,
         dataset: process.env.VITE_SANITY_DATASET || 'production',
-        token: process.env.SANITY_API_TOKEN, // Critical: Only available server-side
-        useCdn: false, // We want fresh data for writes
+        token: process.env.SANITY_API_TOKEN,
+        useCdn: false,
         apiVersion: '2023-05-03',
     });
 
@@ -30,18 +26,22 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: 'Missing docId or field' });
     }
 
-    console.log(`[Ghost Server] Patching ${docId} :: ${field} = ${value}`);
+    console.log(`[Ghost Server] Upserting ${docId} :: ${field} = ${value}`);
 
     try {
-        // 3. Perform the Patch
-        // Handle nested fields (e.g. inputs.reading.0.title)
-        // Sanity requires specific patch syntax for arrays/nested paths.
-        // For this MVP, we will assume the field path provided by LiveField is valid Sanity path syntax.
+        // Robust update: Create if not exists, then patch
+        const transaction = client.transaction();
 
-        await client
-            .patch(docId)
-            .set({ [field]: value }) // Basic set. For arrays this might need 'setIfMissing' or deeper logic
-            .commit();
+        // Ensure doc exists. We use a generic 'page' type for now.
+        transaction.createIfNotExists({
+            _id: docId,
+            _type: 'page',
+            title: 'Auto-generated Ghost Page'
+        });
+
+        transaction.patch(docId, (p) => p.set({ [field]: value }));
+
+        await transaction.commit();
 
         return res.status(200).json({ success: true, message: 'Content persisted to Sanity' });
     } catch (err) {

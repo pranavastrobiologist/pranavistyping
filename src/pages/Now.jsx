@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ActiveIndicator from '../components/ActiveIndicator';
 import NowSection from '../components/NowSection';
 import { LiveField } from '../ghost/LiveField';
+import { fetchAndHydrate } from '../ghost/persistence';
 
 export default function Now() {
+    useEffect(() => {
+        fetchAndHydrate('now-page');
+    }, []);
+
     const lastUpdated = new Date().toLocaleDateString('en-US', {
         month: 'long',
         day: 'numeric',
