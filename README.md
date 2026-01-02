@@ -2,6 +2,9 @@
 
 A minimalist, Medium-style blog platform built with React, Vite, and Tailwind CSS concepts.
 
+## 🌐 Live Site
+**Production URL**: [https://pranavistyping.vercel.app](https://pranavistyping.vercel.app)
+
 ## Features
 - **Minimalist Design**: Clean typography and whitespace-focused layout.
 - **Secure by Default**: 
