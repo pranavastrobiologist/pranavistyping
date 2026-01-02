@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import CreatePost from './pages/CreatePost';
 import PostDetails from './pages/PostDetails';
 import Now from './pages/Now';
+import Lockbox from './pages/Lockbox';
 import ErrorBoundary from './components/ErrorBoundary';
 import { AuthProvider, ProtectedRoute } from './components/AuthContext';
 
@@ -29,6 +30,7 @@ function App() {
                                 />
                                 <Route path="post/:id" element={<PostDetails />} />
                                 <Route path="now" element={<Now />} />
+                                <Route path="lockbox" element={<Lockbox />} />
                             </Route>
                         </Routes>
                     </BrowserRouter>

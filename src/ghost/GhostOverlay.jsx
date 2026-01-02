@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { useGhost } from './GhostContext';
 import { decodeLiveFieldId } from './liveFieldSpec';
 import { GhostInput } from './GhostInput';
+import { saveContent } from './persistence';
 
 export function GhostOverlay() {
     const { isGhostActive, isEditing, setIsEditing, activeField, setActiveField } = useGhost();
@@ -55,20 +56,13 @@ export function GhostOverlay() {
 
     const handleSave = useCallback(async (newValue) => {
         // 1. Optimistic Update (Visual)
-        // Find the node and update it immediately so user feels speed
         const target = document.querySelector(`[data-ghost-id="${activeField.id}"]`);
         if (target) {
             target.innerText = newValue;
         }
 
-        // 2. Persist (Log for now)
-        console.log('Ghost Save:', {
-            docId: activeField.docId,
-            field: activeField.field,
-            value: newValue
-        });
-
-        // TODO: Call Sanity API here
+        // 2. Persist
+        await saveContent(activeField.docId, activeField.field, newValue);
 
         setIsEditing(false);
         setActiveField(null);
