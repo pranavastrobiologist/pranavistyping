@@ -52,11 +52,17 @@ export async function saveContent(docId, field, value) {
             body: JSON.stringify({ docId, field, value })
         });
 
-        if (!response.ok) {
-            throw new Error(`Server error: ${response.statusText}`);
+        let result;
+        try {
+            result = await response.json();
+        } catch (e) {
+            throw new Error(`Server error (${response.status}): ${response.statusText}`);
         }
 
-        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.message || result.error || `Server error ${response.status}`);
+        }
+
         console.log('Sanity Save Success:', result);
         return true;
     } catch (err) {

@@ -9,7 +9,13 @@ export default async function handler(req, res) {
     const SECRET_KEY = process.env.VITE_GHOST_SECRET_KEY;
 
     if (!authHeader || authHeader !== `Bearer ${SECRET_KEY}`) {
-        return res.status(401).json({ message: 'Unauthorized: Invalid Ghost Key' });
+        console.warn(`[Ghost Server] Auth failed. Expected: ${SECRET_KEY?.slice(0, 3)}... Got: ${authHeader?.slice(0, 10)}...`);
+        return res.status(401).json({ message: 'Unauthorized: Ghost Key mismatch or missing.' });
+    }
+
+    if (!process.env.SANITY_API_TOKEN) {
+        console.error('[Ghost Server] Missing SANITY_API_TOKEN');
+        return res.status(500).json({ message: 'Server Config Error: Sanity Write Token is missing.' });
     }
 
     const client = createClient({
