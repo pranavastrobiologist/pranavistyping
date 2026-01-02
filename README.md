@@ -1,4 +1,4 @@
- (Pranav is Typing)
+## (Pranav is Typing)
 
 A personal digital garden and "Now" page, featuring **Ghost Mode**—an invisible, zero-deploy visual editing layer.
 
