@@ -1,46 +1,41 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { PenTool, NotebookPen } from 'lucide-react';
+import { PenTool } from 'lucide-react';
 
 export default function Navbar() {
     const location = useLocation();
 
     return (
         <nav style={{
-            borderBottom: '1px solid var(--border-color)',
-            backdropFilter: 'blur(10px)',
-            position: 'sticky',
+            position: 'absolute', /* Absolute to sit on top of the yellow background seamlessly */
             top: 0,
+            width: '100%',
             zIndex: 100,
-            background: 'rgba(15, 23, 42, 0.8)'
+            padding: '20px 0'
         }}>
             <div className="container" style={{
-                height: '70px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between'
+                justifyContent: 'flex-end',
+                height: '60px'
             }}>
-                <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)' }}>
-                    <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '10px',
-                        background: 'var(--accent-primary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white'
-                    }}>
-                        <NotebookPen size={24} />
-                    </div>
-                    <span>DevBlog</span>
-                </Link>
+                {/* Removed Logo to let the hero text shine */}
 
                 {location.pathname !== '/create' && (
-                    <Link to="/create" className="btn btn-primary">
+                    <Link to="/create" className="btn" style={{
+                        border: '2px solid var(--text-primary)',
+                        boxShadow: '4px 4px 0 var(--text-primary)',
+                        color: 'var(--text-primary)',
+                        fontWeight: 'bold',
+                        background: 'transparent'
+                    }}>
                         <PenTool size={18} />
-                        <span>Write Post</span>
+                        <span>Write Script</span>
                     </Link>
+                )}
+
+                {location.pathname === '/create' && (
+                    <Link to="/" style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>Back to Set</Link>
                 )}
             </div>
         </nav>

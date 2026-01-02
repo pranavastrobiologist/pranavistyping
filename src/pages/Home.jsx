@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { blogStore } from '../lib/store';
 import PostCard from '../components/PostCard';
-import { PenTool } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
@@ -13,52 +12,47 @@ export default function Home() {
 
     return (
         <div>
-            <header style={{ marginBottom: '40px', textAlign: 'center' }}>
-                <h1 style={{
-                    fontSize: '3rem',
-                    background: 'linear-gradient(to right, #fff, #94a3b8)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    marginBottom: '16px'
-                }}>
-                    Simplicity is the soul of wit.
-                </h1>
-                <p style={{ fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto' }}>
-                    Welcome to your personal space for thoughts, ideas, and stories.
-                </p>
+            <header style={{
+                height: '80vh',
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '40px'
+            }}>
+                {/* Spacer to reveal fixed background */}
             </header>
 
-            {posts.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-secondary)' }}>
-                    <div style={{
-                        background: 'var(--bg-glass)',
-                        width: '80px',
-                        height: '80px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: '0 auto 20px'
-                    }}>
-                        <PenTool size={40} />
-                    </div>
-                    <h3>No posts yet</h3>
-                    <p>Start writing your first blog post today.</p>
-                    <div style={{ marginTop: '20px' }}>
-                        <Link to="/create" className="btn btn-primary">Create Post</Link>
-                    </div>
-                </div>
-            ) : (
+            <section className="container glass-panel" style={{ padding: '40px', marginBottom: '40px' }}>
                 <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                    gap: '30px'
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '40px',
+                    borderBottom: '2px solid var(--border-color)',
+                    paddingBottom: '10px'
                 }}>
-                    {posts.map(post => (
-                        <PostCard key={post.id} post={post} />
-                    ))}
+                    <h2 style={{ fontFamily: '"Permanent Marker", cursive', fontSize: '2rem' }}>Latest Scripts</h2>
+                    <Link to="/create" className="btn btn-primary" style={{ border: '2px solid var(--text-primary)', background: 'transparent', color: 'var(--text-primary)', fontWeight: 'bold', boxShadow: '4px 4px 0 var(--text-primary)' }}>New Entry</Link>
                 </div>
-            )}
+
+                {posts.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '60px 0', opacity: 0.7 }}>
+                        <h3>Scene 1: Silence</h3>
+                        <p>No scripts found in the archives.</p>
+                    </div>
+                ) : (
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                        gap: '30px'
+                    }}>
+                        {posts.map(post => (
+                            <PostCard key={post.id} post={post} />
+                        ))}
+                    </div>
+                )}
+            </section>
         </div>
     );
 }

@@ -1,27 +1,33 @@
 :root {
-  /* Colors - Neo Modern / Glassmorphism */
-  --bg-primary: #0f172a; /* Slate 900 */
-  --bg-secondary: #1e293b; /* Slate 800 */
-  --bg-glass: rgba(30, 41, 59, 0.7);
-  
-  --text-primary: #f8fafc; /* Slate 50 */
-  --text-secondary: #94a3b8; /* Slate 400 */
-  --text-accent: #38bdf8; /* Sky 400 */
-  
-  --accent-primary: #3b82f6; /* Blue 500 */
-  --accent-hover: #2563eb; /* Blue 600 */
-  --danger: #ef4444; /* Red 500 */
-  
-  --border-color: rgba(148, 163, 184, 0.1);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-  
+  /* Colors - Poster Style (Yellow/Blue) */
+  --bg-primary: #e8f636;
+  /* Acid Yellow/Greenish similar to image */
+  --bg-secondary: #dce725;
+  /* Slightly darker yellow */
+  --bg-glass: rgba(255, 255, 255, 0.4);
+  /* Lighter glass for yellow bg */
+
+  --text-primary: #1a4cd2;
+  /* Vibrant Blue */
+  --text-secondary: #3b6bd6;
+  /* Lighter Blue */
+  --text-accent: #1a4cd2;
+
+  --accent-primary: #1a4cd2;
+  /* Blue */
+  --accent-hover: #0d2fa1;
+  /* Darker Blue */
+  --danger: #ef4444;
+
+  --border-color: rgba(26, 76, 210, 0.2);
+  --glass-border: 2px solid rgba(26, 76, 210, 0.1);
+
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 16px;
-  
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.5); /* Blue glow */
+
+  --shadow-sm: 4px 4px 0px rgba(26, 76, 210, 0.2);
+  --shadow-md: 8px 8px 0px rgba(26, 76, 210, 0.2);
+  /* Retro hard shadow */
 }
 
 * {
@@ -31,8 +37,13 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-primary);
+  background-image: url('/hero-poster.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -98,14 +109,33 @@ button {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-primary);
   line-height: 1.2;
 }
 
-h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
-h2 { font-size: 2rem; font-weight: 600; margin-bottom: 0.75rem; }
-h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
 
 p {
   color: var(--text-secondary);
@@ -113,7 +143,8 @@ p {
 }
 
 /* Form Elements */
-input, textarea {
+input,
+textarea {
   width: 100%;
   background-color: rgba(30, 41, 59, 0.5);
   border: 1px solid var(--border-color);
@@ -125,7 +156,8 @@ input, textarea {
   font-family: inherit;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
