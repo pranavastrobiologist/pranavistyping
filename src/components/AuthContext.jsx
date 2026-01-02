@@ -4,6 +4,13 @@ import { Navigate, useLocation } from 'react-router-dom';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+    // In a real app, you would use a library like Auth0, AWS Amplify, or Firebase Auth here.
+    // Example: const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+
+    // For this demo/MVP, we simulate a user session.
+    // Use environment variables to toggle "Dev" mode vs "Production" auth behavior if needed.
+    const isDev = import.meta.env.DEV;
+
     // Simulate user session. In a real app, this would check a token/cookie.
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -13,6 +20,7 @@ export const AuthProvider = ({ children }) => {
         setTimeout(() => {
             // For demo purposes, we automatically "login" the user as admin
             // Change this to null to test the "User Manipulation Prevention"
+            // In production, checking a real token would happen here.
             setUser({ id: '1', name: 'Pranav', role: 'admin' });
             setIsLoading(false);
         }, 500);
