@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useGhost } from './GhostContext';
 import { decodeLiveFieldId } from './liveFieldSpec';
+import { GhostInput } from './GhostInput';
 
 export function GhostOverlay() {
     const { isGhostActive, isEditing, setIsEditing, activeField, setActiveField } = useGhost();
@@ -38,9 +39,6 @@ export function GhostOverlay() {
     const handleClick = useCallback((e) => {
         if (!isGhostActive) return;
 
-        // If we click a ghost field, preventing default is optional, 
-        // but often good to prevent link navigation while editing intent is clear.
-        // For now, let's capture it.
         const target = e.target.closest('[data-ghost-id]');
         if (target) {
             e.preventDefault();
@@ -54,6 +52,27 @@ export function GhostOverlay() {
             setHoverRect(null); // Clear hover when editing
         }
     }, [isGhostActive]);
+
+    const handleSave = useCallback(async (newValue) => {
+        // 1. Optimistic Update (Visual)
+        // Find the node and update it immediately so user feels speed
+        const target = document.querySelector(`[data-ghost-id="${activeField.id}"]`);
+        if (target) {
+            target.innerText = newValue;
+        }
+
+        // 2. Persist (Log for now)
+        console.log('Ghost Save:', {
+            docId: activeField.docId,
+            field: activeField.field,
+            value: newValue
+        });
+
+        // TODO: Call Sanity API here
+
+        setIsEditing(false);
+        setActiveField(null);
+    }, [activeField]);
 
     // Attach listeners
     useEffect(() => {
@@ -110,37 +129,15 @@ export function GhostOverlay() {
                 </div>
             )}
 
-            {/* Active Editor (Placeholder for next step) */}
+            {/* Active Editor */}
             {isEditing && activeField && (
-                <div style={{
-                    position: 'fixed', // Fixed for editor UI
-                    bottom: '20px',
-                    right: '20px',
-                    background: 'white',
-                    padding: '12px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    borderRadius: '8px',
-                    border: '1px solid #e5e5e5',
-                    pointerEvents: 'auto', // Enable interaction for editor
-                    minWidth: '200px'
-                }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
-                        Editing <strong>{activeField.field}</strong>
-                    </div>
-                    <button
-                        onClick={() => { setIsEditing(false); setActiveField(null); }}
-                        style={{
-                            background: '#191919',
-                            color: 'white',
-                            border: 'none',
-                            padding: '4px 8px',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            fontSize: '12px'
-                        }}
-                    >
-                        Close
-                    </button>
+                <div style={{ pointerEvents: 'auto' }}>
+                    <GhostInput
+                        field={activeField}
+                        initialValue={activeField.initialValue || document.querySelector(`[data-ghost-id="${activeField.id}"]`)?.innerText}
+                        onSave={handleSave}
+                        onCancel={() => { setIsEditing(false); setActiveField(null); }}
+                    />
                 </div>
             )}
         </div>,
